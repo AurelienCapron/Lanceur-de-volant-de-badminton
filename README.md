@@ -75,10 +75,10 @@ Une étude balistique prenant en compte les frottements aérodynamiques du volan
 ## Aperçu matériel
 
 ### Câblage Arduino
-![Schéma Arduino](hardware/arduino_wiring.png)
+![Schéma Arduino](hardware/arduino_wiring.png?v=2)
 
 ### Dimensions du terrain
-![Terrain de badminton](docs/court_dimensions.png)
+![Terrain de badminton](docs/court_dimensions.png?v=2)
 
 ---
 
