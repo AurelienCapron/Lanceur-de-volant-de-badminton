@@ -26,6 +26,8 @@ Une étude balistique prenant en compte les frottements aérodynamiques du volan
 │   ├── presentation_tipe.pdf         # Présentation complète (modèle théorique et courbes)
 │   ├── user_manual.pdf               # Notice d'installation et d'utilisation
 │   ├── launcher_demo.mp4             # Vidéo d'un essai de tir en gymnase
+│   ├── software_interface.png        # Capture de l'interface logicielle (OpenCV + terrain 2D)
+│   ├── experimental_setup.png        # Photo du dispositif expérimental en gymnase
 │   └── court_dimensions.png          # Dimensions réglementaires du terrain
 ├── hardware/
 │   ├── launcher_controller/
@@ -48,7 +50,11 @@ Une étude balistique prenant en compte les frottements aérodynamiques du volan
 
 ---
 
-## Aperçu matériel
+## Aperçu du système
+
+| Interface logicielle (Stéréovision & Terrain 2D) | Dispositif expérimental en gymnase |
+| :---: | :---: |
+| <img src="docs/software_interface.png" width="450" alt="Interface logicielle OpenCV"> | <img src="docs/experimental_setup.png" width="260" alt="Dispositif en gymnase"> |
 
 | Câblage Arduino | Dimensions du terrain |
 | :---: | :---: |
