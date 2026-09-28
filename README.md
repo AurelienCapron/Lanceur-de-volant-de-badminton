@@ -10,11 +10,10 @@ Projet de TIPE : modélisation d'une assistance mécanique pour l'entraînement 
 
 L'objectif du projet est de localiser un joueur en temps réel sur un demi-terrain de badminton afin d'orienter automatiquement un lanceur de volants selon différents modes d'entraînement.
 
-Le système repose sur quatre briques :
 1. **Détection du joueur (OpenCV)** : Après un premier prototypage avec YOLO, la détection temps réel est assurée par un filtrage colorimétrique dans l'espace HSV suivi d'un seuillage binaire et d'une extraction du contour principal.
 2. **Localisation par stéréovision** : Deux caméras alignées sur un même plan vertical et séparées d'une distance fixe mesurent les angles d'observation du joueur. La position (profondeur et azimut) est déduite par triangulation.
-3. **Logique d'entraînement et visualisation 2D** : Affichage en temps réel de la position du joueur sur un terrain virtuel. Deux modes de visée sont implémentés : tir vers une position fixe ou tir aléatoire dans un rayon de difficulté autour du joueur pour forcer le déplacement.
-4. **Commande matérielle (Arduino UNO)** : Envoi des consignes (azimut, altitude, puissance, fréquences, niveau de difficulté) par liaison série USB pour piloter les servomoteurs d'orientation et gérer le boîtier de contrôle (bouton de sélection de niveau et LEDs d'état).
+3. **Logique d'entraînement et visualisation 2D** : Affichage en temps réel de la position du joueur sur un terrain virtuel (tir vers une position fixe ou tir aléatoire dans un rayon de difficulté autour du joueur).
+4. **Commande matérielle (Arduino UNO)** : Envoi des consignes par liaison série USB pour piloter les servomoteurs d'orientation et gérer le boîtier de contrôle (bouton de niveau et LEDs d'état).
 
 Une étude balistique prenant en compte les frottements aérodynamiques du volant ($C_x \cdot S$) complète le modèle pour relier la distance de tir aux paramètres de lancement.
 
@@ -24,108 +23,67 @@ Une étude balistique prenant en compte les frottements aérodynamiques du volan
 
 ```text
 ├── docs/
-│   ├── court_dimensions.png
-│   ├── launcher_demo.mp4
-│   ├── presentation_tipe.pdf
-│   └── user_manual.pdf
+│   ├── presentation_tipe.pdf         # Présentation complète (modèle théorique et courbes)
+│   ├── user_manual.pdf               # Notice d'installation et d'utilisation
+│   ├── launcher_demo.mp4             # Vidéo d'un essai de tir en gymnase
+│   └── court_dimensions.png          # Dimensions réglementaires du terrain
 ├── hardware/
-│   ├── arduino_wiring.png
-│   ├── bom_components.csv
-│   ├── electrical_schematic.pdf
-│   └── launcher_controller/
-│       └── launcher_controller.ino
+│   ├── launcher_controller/
+│   │   └── launcher_controller.ino   # Firmware Arduino UNO (série + servomoteurs)
+│   ├── arduino_wiring.png            # Câblage de la carte Arduino
+│   ├── electrical_schematic.pdf      # Schéma électrique complet
+│   └── bom_components.csv            # Liste des composants électroniques
 ├── src/
-│   ├── badminton_court.py
-│   ├── camera_calibration.py
-│   ├── color_filter_calibration.py
-│   ├── image_overlay.py
-│   ├── main.py
-│   ├── player_detection.py
-│   ├── position_variables.py
-│   ├── serial_communication.py
-│   └── user_interface.py
-├── README.md
-└── requirements.txt
+│   ├── main.py                       # Boucle principale (caméras, interface 2D, série)
+│   ├── player_detection.py           # Filtrage HSV, seuillage et détection du joueur
+│   ├── position_variables.py         # Triangulation (profondeur, azimut) et géométrie
+│   ├── badminton_court.py            # Modélisation graphique 2D du terrain
+│   ├── color_filter_calibration.py   # Calibration interactive des seuils HSV
+│   ├── camera_calibration.py         # Aide à l'alignement physique des caméras
+│   ├── serial_communication.py       # Détection et connexion au port série USB
+│   ├── user_interface.py             # Commandes dynamiques depuis le terminal
+│   └── image_overlay.py              # Incrustation des données sur le flux vidéo
+└── requirements.txt                  # Dépendances Python
 ```
-
-### Code source Python (`src/`)
-* `main.py` : Boucle principale d'acquisition des deux caméras, calculs géométriques, affichage de l'interface (flux vidéo + terrain 2D) et communication série.
-* `player_detection.py` : Fonctions de traitement d'image (conversion BGR vers HSV, masque de couleur, seuillage et détection du rectangle englobant).
-* `position_variables.py` : Calculs optiques et géométriques (distance focale, champ de vision, triangulation de la profondeur et de l'azimut, coordonnées du cercle de difficulté).
-* `badminton_court.py` : Modélisation graphique du terrain de badminton aux cotes officielles et affichage des cônes de vision.
-* `color_filter_calibration.py` : Script de calibration permettant de récupérer les valeurs HSV d'un pixel au clic et d'ajuster les seuils via des barres de réglage.
-* `camera_calibration.py` : Outil d'aide à l'alignement physique des deux caméras.
-* `serial_communication.py` : Détection des ports USB disponibles et ouverture de la connexion série avec le microcontrôleur.
-* `user_interface.py` : Lecture des commandes saisies dans le terminal pour modifier les paramètres à la volée.
-* `image_overlay.py` : Incrustation des données (distance, largeur, angles, azimut) sur le retour vidéo.
-
-### Électronique et embarqué (`hardware/`)
-* `launcher_controller/launcher_controller.ino` : Programme embarqué sur l'Arduino UNO assurant le décodage des trames série et l'asservissement des servomoteurs.
-* `arduino_wiring.png` et `electrical_schematic.pdf` : Schémas de câblage de la partie commande et de la partie puissance.
-* `bom_components.csv` : Liste des composants électroniques utilisés.
-
-### Documentation (`docs/`)
-* `presentation_tipe.pdf` : Support de présentation complet (modélisation théorique, algorithmes et courbes expérimentales).
-* `user_manual.pdf` : Notice d'installation et d'utilisation du dispositif.
-* `launcher_demo.mp4` : Vidéo d'un essai de tir en gymnase.
-* `court_dimensions.png` : Schéma des dimensions réglementaires du terrain.
 
 ---
 
 ## Aperçu matériel
 
-### Câblage Arduino
-![Schéma Arduino](hardware/arduino_wiring.png?v=2)
-
-### Dimensions du terrain
-![Terrain de badminton](docs/court_dimensions.png?v=2)
+| Câblage Arduino | Dimensions du terrain |
+| :---: | :---: |
+| <img src="hardware/arduino_wiring.png?v=2" width="380" alt="Schéma Arduino"> | <img src="docs/court_dimensions.png?v=2" width="420" alt="Terrain de badminton"> |
 
 ---
 
-## Prérequis et installation
+## Prérequis et utilisation
 
-### Logiciel
-Python 3 avec les bibliothèques nécessaires (`numpy==2.2.3`, `opencv-python==4.11.0.86`, `pyserial==3.5`) :
+### 1. Installation
+Python 3 avec les bibliothèques requises (`numpy==2.2.3`, `opencv-python==4.11.0.86`, `pyserial==3.5`) :
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Matériel
-* 2 caméras fixées sur un support rigide (orientations parallèles, écartement connu).
-* 1 carte Arduino UNO connectée en USB, reliée aux servomoteurs, aux LEDs d'information et au bouton poussoir.
+Matériel requis : 2 caméras fixées sur un support rigide (orientations parallèles, écartement connu) et 1 carte Arduino UNO connectée en USB.
 
----
-
-## Utilisation
-
-1. Téléverser le fichier `hardware/launcher_controller/launcher_controller.ino` sur la carte Arduino.
-2. Vérifier l'alignement des caméras avec `src/camera_calibration.py`, puis ajuster les seuils de détection de couleur selon l'éclairage ambiant avec `src/color_filter_calibration.py`.
-3. Lancer le programme principal :
+### 2. Lancement
+1. Téléverser `hardware/launcher_controller/launcher_controller.ino` sur la carte Arduino.
+2. Vérifier l'alignement des caméras (`src/camera_calibration.py`) et calibrer le filtre de couleur (`src/color_filter_calibration.py`).
+3. Exécuter le programme principal :
 
 ```bash
 python src/main.py
 ```
 
-### Commandes en cours d'exécution
-
-Changement du retour vidéo (touches clavier) :
-* `1` : Flux vidéo original avec cadre de détection
-* `2` : Image seuillée (binaire)
-* `3` : Image filtrée (masque de couleur uniquement)
-
-Modification des paramètres (saisie dans le terminal avec préfixe + valeur entière) :
-* `V` : Fréquence d'envoi des volants (en ms)
-* `F` : Fréquence de mise à jour du lanceur (en ms)
-* `R` : Rayon du cercle de difficulté autour du joueur (en mm)
-* `P` : Profondeur de la position de tir permanent (en mm)
-* `L` : Largeur de la position de tir permanent (en mm)
-
-Le changement du niveau de difficulté (`1`, `2` ou `3`) peut également se faire depuis le bouton physique relié à l'Arduino. Pour arrêter le programme proprement, maintenir la touche `q` pendant 2 secondes.
+### 3. Commandes en cours d'exécution
+* **Affichage caméra (clavier)** : `1` (flux original), `2` (image seuillée), `3` (masque de couleur), maintenir `q` 2s (quitter).
+* **Paramètres dynamiques (terminal, préfixe + entier)** : `V` (fréquence d'envoi en ms), `F` (fréquence de mise à jour en ms), `R` (rayon de difficulté en mm), `P` et `L` (profondeur et largeur du tir fixe en mm).
+* **Difficulté** : Bouton poussoir sur le boîtier Arduino (`1`, `2` ou `3`).
 
 ---
 
-## Résultats et précision des mesures
+## Résultats expérimentaux
 
 Comparaison entre les positions réelles sur le terrain et les mesures issues de la triangulation :
 
