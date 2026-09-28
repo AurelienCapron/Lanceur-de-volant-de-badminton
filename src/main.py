@@ -1,5 +1,5 @@
 """
-Nom du fichier : Programme_principal.py
+Nom du fichier : Programme_principale.py
 Auteur : CAPRON Aurélien
 Date : 24/01/2025
 Description :
