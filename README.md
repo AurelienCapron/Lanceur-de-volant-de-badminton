@@ -1,5 +1,10 @@
 # Lanceur de volant de badminton automatisé
 
+![Python](https://img.shields.io/badge/Language-Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![OpenCV](https://img.shields.io/badge/Vision-OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
+![Arduino](https://img.shields.io/badge/Hardware-Arduino_UNO-00979D?style=for-the-badge&logo=arduino&logoColor=white)
+![Type](https://img.shields.io/badge/Project-TIPE_Engineering-314CB0?style=for-the-badge)
+
 Projet de TIPE : modélisation d'une assistance mécanique pour l'entraînement au badminton, combinant détection du joueur par vision par ordinateur et pilotage d'un lanceur motorisé.
 
 *English summary: Automated badminton shuttlecock launcher developed as an engineering project (TIPE). It uses stereo computer vision (Python / OpenCV) to track a player's 2D position on the court via triangulation (depth and azimuth) and controls an Arduino-based motorized launcher over serial communication.*
@@ -23,28 +28,28 @@ Une étude balistique prenant en compte les frottements aérodynamiques du volan
 
 ```text
 ├── docs/
-│   ├── presentation_tipe.pdf         # Présentation complète (modèle théorique et courbes)
-│   ├── user_manual.pdf               # Notice d'installation et d'utilisation
-│   ├── launcher_demo.mp4             # Vidéo d'un essai de tir en gymnase
-│   ├── software_interface.png        # Capture de l'interface logicielle (OpenCV + terrain 2D)
-│   ├── experimental_setup.png        # Photo du dispositif expérimental en gymnase
-│   └── court_dimensions.png          # Dimensions réglementaires du terrain
+│  ├── presentation_tipe.pdf         # Présentation complète (modèle théorique et courbes)
+│  ├── user_manual.pdf               # Notice d'installation et d'utilisation
+│  ├── launcher_demo.mp4             # Vidéo d'un essai de tir en gymnase
+│  ├── software_interface.png        # Capture de l'interface logicielle (OpenCV + terrain 2D)
+│  ├── experimental_setup.png        # Photo du dispositif expérimental en gymnase
+│  └── court_dimensions.png          # Dimensions réglementaires du terrain
 ├── hardware/
-│   ├── launcher_controller/
-│   │   └── launcher_controller.ino   # Firmware Arduino UNO (série + servomoteurs)
-│   ├── arduino_wiring.png            # Câblage de la carte Arduino
-│   ├── electrical_schematic.pdf      # Schéma électrique complet
-│   └── bom_components.csv            # Liste des composants électroniques
+│  ├── launcher_controller/
+│  │  └── launcher_controller.ino   # Firmware Arduino UNO (série + servomoteurs)
+│  ├── arduino_wiring.png            # Câblage de la carte Arduino
+│  ├── electrical_schematic.pdf      # Schéma électrique complet
+│  └── bom_components.csv            # Liste des composants électroniques
 ├── src/
-│   ├── main.py                       # Boucle principale (caméras, interface 2D, série)
-│   ├── player_detection.py           # Filtrage HSV, seuillage et détection du joueur
-│   ├── position_variables.py         # Triangulation (profondeur, azimut) et géométrie
-│   ├── badminton_court.py            # Modélisation graphique 2D du terrain
-│   ├── color_filter_calibration.py   # Calibration interactive des seuils HSV
-│   ├── camera_calibration.py         # Aide à l'alignement physique des caméras
-│   ├── serial_communication.py       # Détection et connexion au port série USB
-│   ├── user_interface.py             # Commandes dynamiques depuis le terminal
-│   └── image_overlay.py              # Incrustation des données sur le flux vidéo
+│  ├── main.py                       # Boucle principale (caméras, interface 2D, série)
+│  ├── player_detection.py           # Filtrage HSV, seuillage et détection du joueur
+│  ├── position_variables.py         # Triangulation (profondeur, azimut) et géométrie
+│  ├── badminton_court.py            # Modélisation graphique 2D du terrain
+│  ├── color_filter_calibration.py   # Calibration interactive des seuils HSV
+│  ├── camera_calibration.py         # Aide à l'alignement physique des caméras
+│  ├── serial_communication.py       # Détection et connexion au port série USB
+│  ├── user_interface.py             # Commandes dynamiques depuis le terminal
+│  └── image_overlay.py              # Incrustation des données sur le flux vidéo
 └── requirements.txt                  # Dépendances Python
 ```
 
